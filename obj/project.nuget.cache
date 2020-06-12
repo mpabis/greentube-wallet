@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "cr/q/6CLiZkOQ81ROfbDAOTSi2RhOY0e2Tm0Ek3MSf1XzeYUTUUXVFvEyqfLoKFd0+zL0/n7jXxd444j+H8IVA==",
+  "success": true,
+  "projectFilePath": "C:\\repos\\Greentube.Wallet\\Greentube.Wallet.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\e00\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\e00\\.nuget\\packages\\microsoft.openapi\\1.1.4\\microsoft.openapi.1.1.4.nupkg.sha512",
+    "C:\\Users\\e00\\.nuget\\packages\\swashbuckle.aspnetcore\\5.4.1\\swashbuckle.aspnetcore.5.4.1.nupkg.sha512",
+    "C:\\Users\\e00\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.4.1\\swashbuckle.aspnetcore.swagger.5.4.1.nupkg.sha512",
+    "C:\\Users\\e00\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.4.1\\swashbuckle.aspnetcore.swaggergen.5.4.1.nupkg.sha512",
+    "C:\\Users\\e00\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.4.1\\swashbuckle.aspnetcore.swaggerui.5.4.1.nupkg.sha512"
+  ],
+  "logs": []
+}
