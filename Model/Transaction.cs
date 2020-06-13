@@ -8,5 +8,6 @@ namespace Greentube.Wallet.Model
         public Guid PlayerId { get; set; }
         public TransactionType Type { get; set; }
         public decimal Amount { get; set; }
+        public bool Accepted { get; set; }
     }
 }

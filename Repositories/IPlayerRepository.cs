@@ -10,6 +10,6 @@ namespace Greentube.Wallet.Repositories
         Task<IEnumerable<Player>> GetPlayers();
         Task<Player> CreatePlayer();
         Task<Player> GetPlayer(Guid playerId);
-        Task<bool> ChangeBalance(Guid playerId, decimal amountDelta);
+        Task<bool> ChangeBalance(Guid playerId, decimal newBalance);
     }
 }

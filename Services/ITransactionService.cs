@@ -6,6 +6,6 @@ namespace Greentube.Wallet.Services
 {
     public interface ITransactionService
     {
-        Task<bool> Add(Guid transactionId, Guid playerId, TransactionType transactionType, decimal amount);
+        Task<bool> Add(Guid transactionId, Guid playerId, TransactionType transactionType, decimal amount, decimal balance);
     }
 }

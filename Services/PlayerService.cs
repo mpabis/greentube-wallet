@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Greentube.Wallet.Model;
 using Greentube.Wallet.Repositories;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Greentube.Wallet.Services
 {
@@ -20,7 +19,7 @@ namespace Greentube.Wallet.Services
             return _playerRepository.CreatePlayer();
         }
 
-        public async Task<ActionResult<decimal?>> GetBalance(Guid playerId)
+        public async Task<decimal?> GetBalance(Guid playerId)
         {
             var existingPlayer = await _playerRepository.GetPlayer(playerId);
 

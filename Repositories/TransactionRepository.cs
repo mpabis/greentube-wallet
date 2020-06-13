@@ -16,7 +16,12 @@ namespace Greentube.Wallet.Repositories
         }
 
 
-        public Task<Transaction> CreateTransaction(Guid transactionId, Guid playerId, TransactionType transactionType, decimal amount)
+        public Task<Transaction> CreateTransaction(
+            Guid transactionId,
+            Guid playerId,
+            TransactionType transactionType,
+            decimal amount,
+            bool accepted)
         {
             if (_transactions.Any(trx => trx.Id == transactionId))
                 return Task.FromResult((Transaction)null);
@@ -26,11 +31,17 @@ namespace Greentube.Wallet.Repositories
                 Id = transactionId,
                 PlayerId = playerId,
                 Type = transactionType,
-                Amount = amount
+                Amount = amount,
+                Accepted = accepted
             };
 
             _transactions.Add(transaction);
             return Task.FromResult(transaction);
+        }
+
+        public Task<Transaction> GetTransaction(Guid transactionId)
+        {
+            return Task.FromResult(_transactions.FirstOrDefault(transaction => transaction.Id == transactionId));
         }
     }
 }

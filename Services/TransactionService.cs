@@ -16,33 +16,55 @@ namespace Greentube.Wallet.Services
             _playerRepository = playerRepository;
         }
 
-        public async Task<bool> Add(Guid transactionId, Guid playerId, TransactionType transactionType, decimal amount)
+        public async Task<bool> Add(
+            Guid transactionId,
+            Guid playerId,
+            TransactionType transactionType,
+            decimal amount,
+            decimal balance)
         {
-            var transaction = await _transactionRepository.CreateTransaction(transactionId, playerId, transactionType, amount);
-            if (transaction == null)
-                return false;
+            var existingTransaction = await _transactionRepository.GetTransaction(transactionId);
+            if (existingTransaction != null)
+            {
+                return existingTransaction.Accepted;
+            }
 
-            var amountDelta = CalculateAmountDelta(transactionType, amount);
-            return await _playerRepository.ChangeBalance(playerId, amountDelta);
+            var newBalance = CalculateNewBalance(transactionType, amount, balance);
+            
+            var transaction = await _transactionRepository.CreateTransaction(
+                transactionId,
+                playerId,
+                transactionType,
+                amount,
+                Accepted(newBalance));
+
+            if (transaction == null || !transaction.Accepted)
+            {
+                return false;
+            }
+
+            return await _playerRepository.ChangeBalance(playerId, newBalance);
         }
 
-        private static decimal CalculateAmountDelta(TransactionType transactionType, decimal amount)
+        private bool Accepted(in decimal newBalance) => newBalance >= 0;
+
+        private static decimal CalculateNewBalance(TransactionType transactionType, decimal amount, decimal oldBalance)
         {
-            decimal amountDelta;
+            decimal newBalance;
             switch (transactionType)
             {
                 case TransactionType.Deposit:
                 case TransactionType.Win:
-                    amountDelta = amount;
+                    newBalance = oldBalance + amount;
                     break;
                 case TransactionType.Stake:
-                    amountDelta = -amount;
+                    newBalance = oldBalance - amount;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(transactionType), transactionType, null);
             }
 
-            return amountDelta;
+            return newBalance;
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Greentube.Wallet.Services
     public interface IPlayerService
     {
         Task<Player> Register();
-        Task<ActionResult<decimal?>> GetBalance(Guid playerId);
+        Task<decimal?> GetBalance(Guid playerId);
     }
 }
