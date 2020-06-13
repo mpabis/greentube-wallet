@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Greentube.Wallet.Model;
 using Greentube.Wallet.Repositories;
@@ -9,9 +10,12 @@ namespace Greentube.Wallet.Services
     {
         private readonly ITransactionRepository _transactionRepository;
         private readonly IPlayerRepository _playerRepository;
+        private readonly SemaphoreSlim _semaphoreSlim;
+        private const int WaitForLockMs = 100;
 
         public TransactionService(ITransactionRepository transactionRepository, IPlayerRepository playerRepository)
         {
+            _semaphoreSlim = new SemaphoreSlim(1);
             _transactionRepository = transactionRepository;
             _playerRepository = playerRepository;
         }
@@ -23,6 +27,8 @@ namespace Greentube.Wallet.Services
             decimal amount,
             decimal balance)
         {
+            await _semaphoreSlim.WaitAsync(WaitForLockMs);
+
             var existingTransaction = await _transactionRepository.GetTransaction(transactionId);
             if (existingTransaction != null)
             {
@@ -30,7 +36,7 @@ namespace Greentube.Wallet.Services
             }
 
             var newBalance = CalculateNewBalance(transactionType, amount, balance);
-            
+
             var transaction = await _transactionRepository.CreateTransaction(
                 transactionId,
                 playerId,
@@ -43,7 +49,11 @@ namespace Greentube.Wallet.Services
                 return false;
             }
 
-            return await _playerRepository.ChangeBalance(playerId, newBalance);
+            var accepted = await _playerRepository.ChangeBalance(playerId, newBalance);
+
+            _semaphoreSlim.Release();
+
+            return accepted;
         }
 
         private bool Accepted(in decimal newBalance) => newBalance >= 0;
